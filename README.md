@@ -1,7 +1,7 @@
 # Ascension
 
 ## Initial Setup
-Install go to your system. [Download Go](https://golang.org/doc/install)
+Download and install [Go](https://golang.org/doc/install) to your system.
 Once installed, go should have setup a directory structure for your $GOPATH.
 Check golangs page to see how a workspace is setup. [Go Workspace](https://golang.org/doc/code.html#Workspaces)
 
