@@ -5,6 +5,10 @@ import (
 )
 
 // ToJSON serializes a json string to an interface.
-func ToJSON(data []byte, i *interface{}) {
-	json.Unmarshal(data, &i)
+func ToJSON(data []byte, i interface{}) error {
+	err := json.Unmarshal(data, &i)
+	if err != nil {
+		return err
+	}
+	return nil
 }
