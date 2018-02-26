@@ -10,17 +10,17 @@ import (
 
 func main() {
 	url := flag.String("url", "", "enter a url string")
-	post := flag.Bool("post", false, "Set this flag if you are doing a post request.")
+	post := flag.Bool("put", false, "Set this flag if you are doing a post request.")
 	flag.Parse()
 
 	if *post {
-		b, err := ioutil.ReadFile("data.json")
+		b, err := ioutil.ReadFile("test.json")
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		res, err := util.Post(*url, b)
+		res, err := util.Put(*url, b)
 		if err != nil {
 			fmt.Println(err)
 			return
