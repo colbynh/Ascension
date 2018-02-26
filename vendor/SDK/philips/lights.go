@@ -47,23 +47,21 @@ func SetState(light ColorHue) error {
 
 // Rename a light.
 func Rename(light ColorHue) error {
-	stateURI := baseURL+"/"+light.Index
+	deviceURI := baseURL+"/"+light.Index
 	rawJSON := []byte(`{"name":"`+light.Name+`"}`)
-	_, err := util.Put(stateURI, rawJSON)
+	_, err := util.Put(deviceURI, rawJSON)
 	if err != nil {
 		fmt.Println(err)
 	}
 	return nil
 }
 
-func GetNew() {
-
-}
-
-func SearchForNew() {
-	
-}
-
-func Delete() {
-
+// Delete a light device
+func Delete(id string) error {
+	deviceURI := baseURL+"/"+id
+	_, err := util.Delete(deviceURI)
+	if err != nil {
+		return err
+	}
+	return nil
 }
