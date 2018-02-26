@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"encoding/json"
 	"fmt"
-	"github.com/Ascension/main/common/util"
+	"github.com/ascension/internal/util"
 )
 
 const (

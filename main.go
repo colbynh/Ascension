@@ -2,7 +2,7 @@ package main
 
 import (
 	"strconv"
-	"SDK/philips"
+	"sdk/philips"
 	"fmt"
 	"time"
 	"math/rand"
