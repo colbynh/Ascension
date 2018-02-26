@@ -34,9 +34,6 @@ func Post(url string, data []byte) (string, error) {
 		panic(err)
 	}
 	defer res.Body.Close()
-
-	fmt.Println("response Status:", res.Status)
-	fmt.Println("response Headers:", res.Header)
 	body, _ := ioutil.ReadAll(res.Body)
 	ret := fmt.Sprintf("%s\n", string(body))
 	return ret, nil
@@ -44,7 +41,6 @@ func Post(url string, data []byte) (string, error) {
 
 // Put a json payload to a given url.
 func Put(url string, data []byte) (string, error) {
-	fmt.Println("URL: ", url)
 	req, err := http.NewRequest(http.MethodPut, url, bytes.NewBuffer(data))
 	req.Header.Set("X-Custom-Header", "myvalue")
 	req.Header.Set("Content-Type", "application/json")
@@ -55,9 +51,6 @@ func Put(url string, data []byte) (string, error) {
 		return "", err
 	}
 	defer res.Body.Close()
-
-	fmt.Println("response Status:", res.Status)
-	fmt.Println("response Headers:", res.Header)
 	body, _ := ioutil.ReadAll(res.Body)
 	ret := fmt.Sprintf("%s\n", string(body))
 	return ret, nil
