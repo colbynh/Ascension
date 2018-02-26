@@ -8,20 +8,18 @@ import (
 )
 
 // Get request for a url.
-func Get(url string) (string, error) {
+func Get(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	defer res.Body.Close()
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-
-	resStr := fmt.Sprintf("%s\n", string(bytes))
-	return resStr, nil
+	return bytes, nil
 }
 
 // Post a json payload to a given url.
@@ -34,6 +32,27 @@ func Post(url string, data []byte) (string, error) {
 	res, err := client.Do(req)
 	if err != nil {
 		panic(err)
+	}
+	defer res.Body.Close()
+
+	fmt.Println("response Status:", res.Status)
+	fmt.Println("response Headers:", res.Header)
+	body, _ := ioutil.ReadAll(res.Body)
+	ret := fmt.Sprintf("%s\n", string(body))
+	return ret, nil
+}
+
+// Put a json payload to a given url.
+func Put(url string, data []byte) (string, error) {
+	fmt.Println("URL: ", url)
+	req, err := http.NewRequest(http.MethodPut, url, bytes.NewBuffer(data))
+	req.Header.Set("X-Custom-Header", "myvalue")
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return "", err
 	}
 	defer res.Body.Close()
 
