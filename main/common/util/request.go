@@ -55,3 +55,18 @@ func Put(url string, data []byte) (string, error) {
 	ret := fmt.Sprintf("%s\n", string(body))
 	return ret, nil
 }
+
+// Delete sends a delete request to the given url.
+func Delete(url string) (string, error) {
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	ret := fmt.Sprintf("%s\n", string(body))
+	return ret, nil
+}
