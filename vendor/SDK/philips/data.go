@@ -37,14 +37,19 @@ type ColorHue struct {
 }
 
 type LightState struct {
+	Index     string 
+	Type      string `json:"type"`
+	Modelid   string `json:"modelid"`
+	Name      string `json:"name"`
+	Swversion string `json:"swversion"`
 	Xy        []float32  `json:"xy"`
-		Ct        int    `json:"ct"`
-		Alert     string `json:"alert"`
-		Sat       int    `json:"sat"`
-		Effect    string `json:"effect"`
-		Bri       int    `json:"bri"`
-		Hue       int    `json:"hue"`
-		Colormode string `json:"colormode"`
-		Reachable bool   `json:"reachable"`
-		On        bool   `json:"on"`
+	Ct        int    `json:"ct"`
+	Alert     string `json:"alert"`
+	Sat       int    `json:"sat"`
+	Effect    string `json:"effect"`
+	Bri       int    `json:"bri"`
+	Hue       int    `json:"hue"`
+	Colormode string `json:"colormode"`
+	Reachable bool   `json:"reachable"`
+	On        bool   `json:"on"`
 }
