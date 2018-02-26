@@ -13,7 +13,6 @@ const (
 
 // GetAll gets all the lights on the network
 func GetAll() ([]ColorHue, error) {
-	fmt.Println("base: ", baseURL)
 	data, err := util.Get(baseURL)
 	if err != nil {
 		return nil, err
@@ -32,23 +31,6 @@ func GetAll() ([]ColorHue, error) {
 	return lights, nil
 }
 
-func GetNew() {
-
-}
-
-func SearchForNew() {
-
-}
-
-func GetStateAttrs() {
-
-}
-
-// SetAttrs renames the light.
-func SetAttrs() {
-
-}
-
 // SetState sets the state of a light based on it'd id.
 func SetState(light ColorHue) error {
 	stateURI := baseURL+"/"+filepath.Join(light.Index,"state")
@@ -56,9 +38,30 @@ func SetState(light ColorHue) error {
 	if err != nil {
 		return err
 	}
-	res, err := util.Put(stateURI, bytes)
-	fmt.Println("Response: ", res)
+	_, err = util.Put(stateURI, bytes)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+// Rename a light.
+func Rename(light ColorHue) error {
+	stateURI := baseURL+"/"+light.Index
+	rawJSON := []byte(`{"name":"`+light.Name+`"}`)
+	_, err := util.Put(stateURI, rawJSON)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil
+}
+
+func GetNew() {
+
+}
+
+func SearchForNew() {
+	
 }
 
 func Delete() {
