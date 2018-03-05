@@ -15,6 +15,12 @@ func main() {
 		fmt.Println("Getall error: "+err.Error())
 	}
 
+	allgroups, err := lights.GetAllGroups()
+	if err != nil {
+		fmt.Println("Getall error: "+err.Error())
+	}
+	fmt.Printf("%+v\n", allgroups)
+
 	RenameAllLights(allLights)
 	RandColors(allLights)
 }

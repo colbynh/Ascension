@@ -36,20 +36,24 @@ type ColorHue struct {
 	Index    string 
 }
 
-type LightState struct {
-	Index     string 
-	Type      string `json:"type"`
-	Modelid   string `json:"modelid"`
-	Name      string `json:"name"`
-	Swversion string `json:"swversion"`
-	Xy        []float32  `json:"xy"`
-	Ct        int    `json:"ct"`
-	Alert     string `json:"alert"`
-	Sat       int    `json:"sat"`
-	Effect    string `json:"effect"`
-	Bri       int    `json:"bri"`
-	Hue       int    `json:"hue"`
+// LightGroup stores hue groups data
+type LightGroup struct {
+	Index	string
+	Name  string `json:"name"`
+	Lights  []string `json:"lights"`
+	Type  string `json:"type"`
+	Action LightAction `json:"action"`
+}
+
+// LightAction stores action elements of a group
+type LightAction struct {
+	On  bool `json:"on"`
+	Bri  int `json:"bri"`
+	Hue int `json:"hue"`
+	Sat int `json:"sat"`
+	Effect string `json:"effect"`
+	Xy []float32 `json:"xy"`
+	Ct int `json:"ct"`
+	Alert string `json:"alert"`
 	Colormode string `json:"colormode"`
-	Reachable bool   `json:"reachable"`
-	On        bool   `json:"on"`
 }
