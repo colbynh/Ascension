@@ -9,8 +9,8 @@ const (
 	baseGroupURL = "http://localhost/api/newdeveloper/groups"
 )
 
-// GetAllGroups gets all the hue groups on the network
-// and returns any errors.
+// GetAllGroups Returns a list of all groups in the system, 
+// each group has a name and unique identification number.
 func GetAllGroups() ([]LightGroup, error){
 	data, err := util.Get(baseGroupURL)
 	if err != nil {
@@ -29,4 +29,19 @@ func GetAllGroups() ([]LightGroup, error){
 	}
 	return groups, nil
 
+}
+
+// CreateGroup creates a new group containing the lights 
+// specified and optional name.
+func CreateGroup(group LightGroup) error {
+	bytes, err := json.Marshal(group)
+	if err != nil {
+		return err
+	}
+
+	_, err = util.Post(baseGroupURL, bytes)
+	if err != nil {
+		return err
+	}
+	return nil
 }
