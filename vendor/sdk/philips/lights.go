@@ -66,7 +66,7 @@ func Delete(id string) error {
 	return nil
 }
 
-// TurnOnRoom turns on all lights of a given group(room).
+// ToggleRoom turns on/off all lights of a given group(room).
 func ToggleRoom(name string) error {
 	lg, err := GetGroup(name)
 	if err != nil {
@@ -83,6 +83,5 @@ func ToggleRoom(name string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%+v\n", lg)
 	return nil
 }
