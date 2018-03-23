@@ -1,4 +1,4 @@
-package lights
+package philips
 
 type Data struct {
 

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-// LightsOn turn on the lights
+// LightsToggle toggles the lights
 func LightsToggle(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fmt.Fprintf(w, "Room: %v\n", vars["room"])

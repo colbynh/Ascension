@@ -1,4 +1,4 @@
-package lights
+package philips
 
 import (
 	"path/filepath"
@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	baseURL = "http://localhost/api/newdeveloper/lights"
+	baseURL = "http://10.0.0.130/api/KbYFpMci3bdEnLQgxbdXxwfgo8Bxsn8oBYo3w4e1/lights"
 )
 
 // GetAll gets all the lights on the network
@@ -63,5 +63,26 @@ func Delete(id string) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+// TurnOnRoom turns on all lights of a given group(room).
+func ToggleRoom(name string) error {
+	lg, err := GetGroup(name)
+	if err != nil {
+		return err
+	}
+
+	if lg.Action.On == false {
+		lg.Action.On = true
+	} else {
+		lg.Action.On = false
+	}
+
+	err = SetGroupState(lg)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%+v\n", lg)
 	return nil
 }

@@ -1,12 +1,14 @@
-package lights
+package philips
 
 import (
+	"fmt"
 	"encoding/json"
+	"path/filepath"
 	"github.com/ascension/internal/util"
 )
 
 const (
-	baseGroupURL = "http://localhost/api/newdeveloper/groups"
+	baseGroupURL = "http://10.0.0.130/api/KbYFpMci3bdEnLQgxbdXxwfgo8Bxsn8oBYo3w4e1/groups"
 )
 
 // GetAllGroups Returns a list of all groups in the system, 
@@ -44,4 +46,34 @@ func CreateGroup(group LightGroup) error {
 		return err
 	}
 	return nil
+}
+
+// SetGroupState sets the state of a light based on it'd id.
+func SetGroupState(group LightGroup) error {
+	stateURI := baseGroupURL+"/"+filepath.Join(group.Index,"action")
+	bytes, err := json.Marshal(group.Action)
+	if err != nil {
+		return err
+	}
+	_, err = util.Put(stateURI, bytes)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetGroup gets a specific group by name and returns
+// a LightGroup struct.
+func GetGroup(name string) (LightGroup, error) {
+	groups, err := GetAllGroups()
+	if err != nil {
+		fmt.Println("Getall error: "+err.Error())
+	}
+
+	for _, g := range groups {
+		if g.Name == name {
+			return g, nil
+		}
+	}
+	return LightGroup{}, fmt.Errorf("Light group: \"%v\" not found", name)
 }
