@@ -7,10 +7,14 @@ import (
 )
 
 // Start the server
-func Start() {
+func Start() error {
 	r := mux.NewRouter()
 
 	// Lights routes
 	r.HandleFunc("/{room}/lights/toggle", controllers.LightsToggle)
-	http.ListenAndServe(":9090", r)
+	err := http.ListenAndServe(":9090", r)
+	if err != nil {
+		return err
+	}
+	return nil
 }
