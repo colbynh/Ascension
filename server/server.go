@@ -12,5 +12,5 @@ func Start() {
 
 	// Lights routes
 	r.HandleFunc("/{room}/lights/toggle", controllers.LightsToggle)
-	http.ListenAndServe(":10000", r)
+	http.ListenAndServe(":9090", r)
 }
