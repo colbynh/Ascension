@@ -1,9 +1,5 @@
 package philips
 
-type Data struct {
-
-}
-
 // ColorHue struct is storage for phillips smart hue color lights
 type ColorHue struct {
 	Modelid   string `json:"modelid"`
