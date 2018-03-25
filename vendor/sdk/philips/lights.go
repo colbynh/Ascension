@@ -1,14 +1,17 @@
 package philips
 
 import (
+	"strings"
 	"path/filepath"
 	"encoding/json"
 	"fmt"
 	"github.com/ascension/internal/util"
+	"github.com/spf13/viper"
 )
 
-const (
-	baseURL = "http://10.0.0.130/api/KbYFpMci3bdEnLQgxbdXxwfgo8Bxsn8oBYo3w4e1/lights"
+var (
+	apiKey = viper.GetString("Key")
+	baseURL = "http://huebridge/api/"+apiKey+"/lights"
 )
 
 // GetAll gets all the lights on the network
@@ -84,4 +87,21 @@ func ToggleRoom(name string) error {
 		return err
 	}
 	return nil
+}
+
+// GetBridgeIP automatically detects the local ip of the philips hue bridge
+func GetBridgeIP() (string, error) {
+	const bridgeRes = "unauthorized user"
+	ips, err := util.GetNetworkIPs()
+    if err != nil {
+        return "", err
+	}
+	for _, ip := range ips {
+		url := "http://"+ip+"/api/username"
+		b, _ := util.Get(url)
+		if strings.Contains(string(b), bridgeRes) {
+			return ip, nil
+		}
+	}
+	return "", fmt.Errorf("error: unable to detect philips hue bridge")
 }

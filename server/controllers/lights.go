@@ -16,5 +16,4 @@ func LightsToggle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, "Error: %v\n", err)
 	}
-	
 }
