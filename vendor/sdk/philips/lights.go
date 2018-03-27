@@ -69,26 +69,6 @@ func Delete(id string) error {
 	return nil
 }
 
-// ToggleRoom turns on/off all lights of a given group(room).
-func ToggleRoom(name string) error {
-	lg, err := GetGroup(name)
-	if err != nil {
-		return err
-	}
-
-	if lg.Action.On == false {
-		lg.Action.On = true
-	} else {
-		lg.Action.On = false
-	}
-
-	err = SetGroupState(lg)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 // GetBridgeIP automatically detects the local ip of the philips hue bridge
 func GetBridgeIP() (string, error) {
 	const bridgeRes = "unauthorized user"

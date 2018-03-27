@@ -77,3 +77,23 @@ func GetGroup(name string) (LightGroup, error) {
 	}
 	return LightGroup{}, fmt.Errorf("Light group: \"%v\" not found", name)
 }
+
+// ToggleRoom turns on/off all lights of a given group(room).
+func ToggleRoom(name string) error {
+	lg, err := GetGroup(name)
+	if err != nil {
+		return err
+	}
+
+	if lg.Action.On == false {
+		lg.Action.On = true
+	} else {
+		lg.Action.On = false
+	}
+
+	err = SetGroupState(lg)
+	if err != nil {
+		return err
+	}
+	return nil
+}
