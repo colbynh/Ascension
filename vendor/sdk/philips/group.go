@@ -7,14 +7,11 @@ import (
 	"github.com/ascension/internal/util"
 )
 
-const (
-	baseGroupURL = "http://10.0.0.130/api/KbYFpMci3bdEnLQgxbdXxwfgo8Bxsn8oBYo3w4e1/groups"
-)
 
 // GetAllGroups Returns a list of all groups in the system, 
 // each group has a name and unique identification number.
-func GetAllGroups() ([]LightGroup, error){
-	data, err := util.Get(baseGroupURL)
+func GetAllGroups(hueURL string) ([]LightGroup, error){
+	data, err := util.Get(hueURL)
 	if err != nil {
 		return nil, err
 	}
@@ -35,13 +32,13 @@ func GetAllGroups() ([]LightGroup, error){
 
 // CreateGroup creates a new group containing the lights 
 // specified and optional name.
-func CreateGroup(group LightGroup) error {
+func CreateGroup(hueURL string, group LightGroup) error {
 	bytes, err := json.Marshal(group)
 	if err != nil {
 		return err
 	}
 
-	_, err = util.Post(baseGroupURL, bytes)
+	_, err = util.Post(hueURL, bytes)
 	if err != nil {
 		return err
 	}
@@ -49,8 +46,8 @@ func CreateGroup(group LightGroup) error {
 }
 
 // SetGroupState sets the state of a light based on it'd id.
-func SetGroupState(group LightGroup) error {
-	stateURI := baseGroupURL+"/"+filepath.Join(group.Index,"action")
+func SetGroupState(hueURL string, group LightGroup) error {
+	stateURI := hueURL+"/"+filepath.Join(group.Index,"action")
 	bytes, err := json.Marshal(group.Action)
 	if err != nil {
 		return err
@@ -64,8 +61,8 @@ func SetGroupState(group LightGroup) error {
 
 // GetGroup gets a specific group by name and returns
 // a LightGroup struct.
-func GetGroup(name string) (LightGroup, error) {
-	groups, err := GetAllGroups()
+func GetGroup(hueURL, name string) (LightGroup, error) {
+	groups, err := GetAllGroups(hueURL)
 	if err != nil {
 		fmt.Println("Getall error: "+err.Error())
 	}
@@ -79,8 +76,8 @@ func GetGroup(name string) (LightGroup, error) {
 }
 
 // ToggleRoom turns on/off all lights of a given group(room).
-func ToggleRoom(name string) error {
-	lg, err := GetGroup(name)
+func ToggleRoom(hueURL, name string) error {
+	lg, err := GetGroup(hueURL, name)
 	if err != nil {
 		return err
 	}
@@ -91,7 +88,7 @@ func ToggleRoom(name string) error {
 		lg.Action.On = false
 	}
 
-	err = SetGroupState(lg)
+	err = SetGroupState(hueURL, lg)
 	if err != nil {
 		return err
 	}

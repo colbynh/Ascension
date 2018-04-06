@@ -6,17 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ascension/internal/util"
-	"github.com/spf13/viper"
-)
-
-var (
-	apiKey = viper.GetString("Key")
-	baseURL = "http://huebridge/api/"+apiKey+"/lights"
 )
 
 // GetAll gets all the lights on the network
-func GetAll() ([]ColorHue, error) {
-	data, err := util.Get(baseURL)
+func GetAll(hueURL string) ([]ColorHue, error) {
+
+	data, err := util.Get(hueURL)
 	if err != nil {
 		return nil, err
 	}
@@ -35,8 +30,8 @@ func GetAll() ([]ColorHue, error) {
 }
 
 // SetState sets the state of a light based on it'd id.
-func SetState(light ColorHue) error {
-	stateURI := baseURL+"/"+filepath.Join(light.Index,"state")
+func SetState(hueURL string, light ColorHue) error {
+	stateURI := hueURL+"/"+filepath.Join(light.Index,"state")
 	bytes, err := json.Marshal(light.State)
 	if err != nil {
 		return err
@@ -49,8 +44,8 @@ func SetState(light ColorHue) error {
 }
 
 // Rename a light.
-func Rename(light ColorHue) error {
-	deviceURI := baseURL+"/"+light.Index
+func Rename(hueURL string, light ColorHue) error {
+	deviceURI := hueURL+"/"+light.Index
 	rawJSON := []byte(`{"name":"`+light.Name+`"}`)
 	_, err := util.Put(deviceURI, rawJSON)
 	if err != nil {
@@ -60,8 +55,8 @@ func Rename(light ColorHue) error {
 }
 
 // Delete a light device
-func Delete(id string) error {
-	deviceURI := baseURL+"/"+id
+func Delete(hueURL, id string) error {
+	deviceURI := hueURL+"/"+id
 	_, err := util.Delete(deviceURI)
 	if err != nil {
 		return err
