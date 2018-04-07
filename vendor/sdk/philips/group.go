@@ -77,7 +77,7 @@ func GetGroup(groupURL, name string) (LightGroup, error) {
 
 // ToggleRoom turns on/off all lights of a given group(room).
 func ToggleRoom(hueURL, name string) error {
-	groupURL := hueURL+"/groups/"
+	groupURL := hueURL+"/groups"
 	lg, err := GetGroup(groupURL, name)
 	if err != nil {
 		return err
@@ -89,7 +89,7 @@ func ToggleRoom(hueURL, name string) error {
 		lg.Action.On = false
 	}
 
-	err = SetGroupState(hueURL, lg)
+	err = SetGroupState(groupURL, lg)
 	if err != nil {
 		return err
 	}
