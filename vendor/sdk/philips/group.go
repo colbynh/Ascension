@@ -10,8 +10,8 @@ import (
 
 // GetAllGroups Returns a list of all groups in the system, 
 // each group has a name and unique identification number.
-func GetAllGroups(hueURL string) ([]LightGroup, error){
-	data, err := util.Get(hueURL)
+func GetAllGroups(groupURL string) ([]LightGroup, error){
+	data, err := util.Get(groupURL)
 	if err != nil {
 		return nil, err
 	}
@@ -32,13 +32,13 @@ func GetAllGroups(hueURL string) ([]LightGroup, error){
 
 // CreateGroup creates a new group containing the lights 
 // specified and optional name.
-func CreateGroup(hueURL string, group LightGroup) error {
+func CreateGroup(groupURL string, group LightGroup) error {
 	bytes, err := json.Marshal(group)
 	if err != nil {
 		return err
 	}
 
-	_, err = util.Post(hueURL, bytes)
+	_, err = util.Post(groupURL, bytes)
 	if err != nil {
 		return err
 	}
@@ -46,8 +46,8 @@ func CreateGroup(hueURL string, group LightGroup) error {
 }
 
 // SetGroupState sets the state of a light based on it'd id.
-func SetGroupState(hueURL string, group LightGroup) error {
-	stateURI := hueURL+"/"+filepath.Join(group.Index,"action")
+func SetGroupState(groupURL string, group LightGroup) error {
+	stateURI := groupURL+"/"+filepath.Join(group.Index,"action")
 	bytes, err := json.Marshal(group.Action)
 	if err != nil {
 		return err
@@ -61,8 +61,8 @@ func SetGroupState(hueURL string, group LightGroup) error {
 
 // GetGroup gets a specific group by name and returns
 // a LightGroup struct.
-func GetGroup(hueURL, name string) (LightGroup, error) {
-	groups, err := GetAllGroups(hueURL)
+func GetGroup(groupURL, name string) (LightGroup, error) {
+	groups, err := GetAllGroups(groupURL)
 	if err != nil {
 		fmt.Println("Getall error: "+err.Error())
 	}
@@ -77,7 +77,8 @@ func GetGroup(hueURL, name string) (LightGroup, error) {
 
 // ToggleRoom turns on/off all lights of a given group(room).
 func ToggleRoom(hueURL, name string) error {
-	lg, err := GetGroup(hueURL, name)
+	groupURL := hueURL+"/groups/"
+	lg, err := GetGroup(groupURL, name)
 	if err != nil {
 		return err
 	}

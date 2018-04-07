@@ -12,7 +12,7 @@ func LightsToggle(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	pConfig := Cfg.Philips
 	
-	url := pConfig.BridgeIP+"/"+pConfig.APIKey+"/lights"
+	url := pConfig.BridgeIP+"/"+pConfig.APIKey
 
 	fmt.Fprintf(w, "Room: %v\n", vars["room"])
 
