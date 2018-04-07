@@ -39,10 +39,10 @@ func initConfigs() config.VendorConfig {
 	if err != nil {
 		panic(err)
 	}
+	
 	pCfg := config.PhilipsConfig{}
-	util.ToJSON(pb, pCfg)
+	err = util.ToJSON(pb, &pCfg)
 	vendorCfg.Philips = pCfg
-
 	return vendorCfg
 }
 
