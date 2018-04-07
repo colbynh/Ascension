@@ -22,7 +22,7 @@ func ToJSON(data []byte, i interface{}) error {
 func SetStackEnv(s string) error {
 	stacks := map[string]bool{
 		"dev": true,
-		"stag":   true,
+		"stag": true,
 		"prod": true,
 	}
 	if stacks[s] {
