@@ -53,3 +53,9 @@ type LightAction struct {
 	Alert string `json:"alert"`
 	Colormode string `json:"colormode"`
 }
+
+// Config stores sensitive configuration data for philips hue.
+type Config struct {
+	BridgeIP  string `json:"bridgeip"`
+	APIKey  string `json:"apikey"`
+}

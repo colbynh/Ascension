@@ -1,19 +1,17 @@
 package philips
 
 import (
+	"strings"
 	"path/filepath"
 	"encoding/json"
 	"fmt"
 	"github.com/ascension/internal/util"
 )
 
-const (
-	baseURL = "http://10.0.0.130/api/KbYFpMci3bdEnLQgxbdXxwfgo8Bxsn8oBYo3w4e1/lights"
-)
-
 // GetAll gets all the lights on the network
-func GetAll() ([]ColorHue, error) {
-	data, err := util.Get(baseURL)
+func GetAll(hueURL string) ([]ColorHue, error) {
+
+	data, err := util.Get(hueURL)
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +30,8 @@ func GetAll() ([]ColorHue, error) {
 }
 
 // SetState sets the state of a light based on it'd id.
-func SetState(light ColorHue) error {
-	stateURI := baseURL+"/"+filepath.Join(light.Index,"state")
+func SetState(hueURL string, light ColorHue) error {
+	stateURI := hueURL+"/"+filepath.Join(light.Index,"state")
 	bytes, err := json.Marshal(light.State)
 	if err != nil {
 		return err
@@ -46,8 +44,8 @@ func SetState(light ColorHue) error {
 }
 
 // Rename a light.
-func Rename(light ColorHue) error {
-	deviceURI := baseURL+"/"+light.Index
+func Rename(hueURL string, light ColorHue) error {
+	deviceURI := hueURL+"/"+light.Index
 	rawJSON := []byte(`{"name":"`+light.Name+`"}`)
 	_, err := util.Put(deviceURI, rawJSON)
 	if err != nil {
@@ -57,8 +55,8 @@ func Rename(light ColorHue) error {
 }
 
 // Delete a light device
-func Delete(id string) error {
-	deviceURI := baseURL+"/"+id
+func Delete(hueURL, id string) error {
+	deviceURI := hueURL+"/"+id
 	_, err := util.Delete(deviceURI)
 	if err != nil {
 		return err
@@ -66,22 +64,19 @@ func Delete(id string) error {
 	return nil
 }
 
-// ToggleRoom turns on/off all lights of a given group(room).
-func ToggleRoom(name string) error {
-	lg, err := GetGroup(name)
-	if err != nil {
-		return err
+// GetBridgeIP automatically detects the local ip of the philips hue bridge
+func GetBridgeIP() (string, error) {
+	const bridgeRes = "unauthorized user"
+	ips, err := util.GetNetworkIPs()
+    if err != nil {
+        return "", err
 	}
-
-	if lg.Action.On == false {
-		lg.Action.On = true
-	} else {
-		lg.Action.On = false
+	for _, ip := range ips {
+		url := "http://"+ip+"/api/username"
+		b, _ := util.Get(url)
+		if strings.Contains(string(b), bridgeRes) {
+			return ip, nil
+		}
 	}
-
-	err = SetGroupState(lg)
-	if err != nil {
-		return err
-	}
-	return nil
+	return "", fmt.Errorf("error: unable to detect philips hue bridge")
 }
